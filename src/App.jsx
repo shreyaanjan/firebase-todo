@@ -13,6 +13,7 @@ const App = () => {
             {user && <Header />}
             <Routes>
                 <Route path="/" element={<ProtectedRoute Component={Todos} />} />
+                <Route path="/edit-todo/:id" element={<ProtectedRoute Component={Todos} />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/sign-in" element={<SignIn />} />
             </Routes>

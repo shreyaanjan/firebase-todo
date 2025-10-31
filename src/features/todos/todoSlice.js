@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, db, provider } from "../../config/firebase";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 
 export const signInUser = createAsyncThunk('signInUser', async ({ email, password }) => {
     try {
@@ -73,6 +73,22 @@ export const fetchTodo = createAsyncThunk('todos/fetchTodo', async (uid) => {
     }
 })
 
+export const deleteTodo = createAsyncThunk('todos/deleteTodo', async ({ uid, deleteId }) => {
+    try {
+        await deleteDoc(doc(db, `${uid}`, deleteId))
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+export const updateTodo = createAsyncThunk('todos/updateTodo', async ({ uid, updateId, data }) => {
+    try {
+        await updateDoc(doc(db, `${uid}`, updateId), data)
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 const todoSlice = createSlice({
     name: "todos",
     initialState: {
@@ -96,9 +112,6 @@ const todoSlice = createSlice({
         })
         builder.addCase(signUpUser.fulfilled, (state, action) => {
             state.currentUser = action.payload
-        })
-        builder.addCase(addTodo.fulfilled, (state, action) => {
-            state.list.push(action.payload)
         })
         builder.addCase(fetchTodo.fulfilled, (state, action) => {
             state.list = action.payload
