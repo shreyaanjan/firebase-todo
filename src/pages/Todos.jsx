@@ -50,7 +50,7 @@ const Todos = () => {
                 toast.success("Task Added successfully!");
             } else {
                 dispatch(updateTodo({ uid: user.id, updateId, data: input }))
-                toast.info("Task Updated successfully!");
+                toast.success("Task Updated successfully!");
                 setIsEdit(false)
                 setUpdateId(null)
             }
@@ -143,6 +143,7 @@ const Todos = () => {
                                             )}
                                             <button onClick={() => {
                                                 dispatch(deleteTodo({ uid: user.id, deleteId: task.id }))
+                                                toast.success("Task Deleted Successfully !");
                                                 dispatch(fetchTodo(user.id))
                                             }} className="text-red-600 text-base">
                                                 <i className="bi bi-trash3"></i>
