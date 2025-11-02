@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
 import { addTodo, deleteTodo, fetchTodo, updateTodo } from "../features/todos/todoSlice"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "../config/firebase"
+import { toast } from "react-toastify"
 
 const Todos = () => {
     const [input, setInput] = useState({
@@ -12,7 +12,6 @@ const Todos = () => {
     const [isEdit, setIsEdit] = useState(false)
     const [updateId, setUpdateId] = useState(null)
 
-    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const user = useSelector((store) => store.todos.currentUser)
@@ -41,15 +40,26 @@ const Todos = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (!isEdit) {
-            dispatch(addTodo({ uid: user.id, data: input }))
-        } else {
-            dispatch(updateTodo({ uid: user.id, updateId, data: input }))
-            setIsEdit(false)
-            setUpdateId(null)
+        if (input.task.trim() === "" || input.priority.trim() === "") {
+            toast.error("Enter all Fields Correctly!");
+            return;
         }
-        dispatch(fetchTodo(user.id))
-        setInput({ task: '', priority: '' })
+        try {
+            if (!isEdit) {
+                dispatch(addTodo({ uid: user.id, data: input }))
+                toast.success("Task Added successfully!");
+            } else {
+                dispatch(updateTodo({ uid: user.id, updateId, data: input }))
+                toast.info("Task Updated successfully!");
+                setIsEdit(false)
+                setUpdateId(null)
+            }
+            dispatch(fetchTodo(user.id))
+            setInput({ task: '', priority: '' })
+        } catch (error) {
+            toast.error("Something went wrong!");
+            console.error(error);
+        }
     }
 
     const handleStatusChange = (task) => {
@@ -65,79 +75,84 @@ const Todos = () => {
     }
 
     return (
-        <div className="container mx-auto">
-            <form onSubmit={handleSubmit} className="max-w-sm mx-auto my-10">
-                <div className="mb-5">
-                    <label htmlFor="task" className="block mb-2 text-sm font-medium text-gray-900">Enter Task</label>
-                    <input type="text" id="task" onChange={handleChange} value={input.task} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="name@flowbite.com" required />
-                </div>
-                <div className="mb-5">
-                    <label htmlFor="priority" className="block mb-2 text-sm font-medium text-gray-900">Priority </label>
-                    <select id="priority" onChange={handleChange} value={input.priority} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        <option value="">Select a Priority</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
-                    </select>
-                </div>
-                <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{isEdit ? "Update Task" : "Add Task"}</button>
-            </form>
-            <div>
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" className="px-6 py-3">
-                                    Task Name
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Priority
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Status
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                todos.map((task) => {
-                                    return <tr key={task.id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {task.task}
-                                        </th>
+        <div className="min-h-screen bg-gradient-to-br from-[#e0f2fe] via-[#f0f9ff] to-[#ede9fe] py-10 px-5 text-[#1e293b] font-[poppins]">
+            <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/60">
+                <h2 className="text-center text-3xl font-semibold text-[#20233f] mb-10 tracking-wide">
+                    TaskBoard
+                </h2>
+                <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row sm:items-end gap-5 mb-10">
+                    <div className="flex-1">
+                        <label htmlFor="task" className="block mb-2 text-lg font-semibold text-[#334155]">
+                            Enter Task
+                        </label>
+                        <input type="text" id="task" onChange={handleChange} value={input.task}
+                            className="w-full h-11 bg-white/70 border-2 border-[#c7d2fe] text-[#1e293b] text-sm rounded-xl focus:border-[#6366f1] p-3 outline-none shadow-inner transition-all" />
+                    </div>
+                    <div className="w-full sm:w-40">
+                        <label htmlFor="priority" className="block mb-2 text-lg font-semibold text-[#334155]">
+                            Priority
+                        </label>
+                        <select id="priority" onChange={handleChange} value={input.priority}
+                            className="w-full h-11 bg-white/70 border-2 border-[#c7d2fe] text-[#1e293b] text-sm rounded-xl focus:border-[#6366f1] p-3 outline-none shadow-inner transition-all">
+                            <option value="">Select</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <button type="submit" className="submit-btn py-2 px-7 tracking-wider">
+                        {isEdit ? "Update Task" : "Add Task"}
+                    </button>
+                </form>
+                <div className="rounded-2xl border border-[#c7d2fe]/60 bg-[#f0f7ff]/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(147,197,253,0.25)] transition-all duration-300 overflow-hidden">
+                    <div className="max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#a5b4fc] scrollbar-track-transparent hover:scrollbar-thumb-[#818cf8]">
+                        <table className="w-full text-sm text-left text-[#1e293b]">
+                            <thead className="uppercase text-[#20233f] bg-[#e0e7ff]/80 border-b border-[#c7d2fe] sticky top-0 z-10">
+                                <tr>
+                                    <th scope="col" className="px-6 py-4">Task</th>
+                                    <th scope="col" className="px-6 py-4">Priority</th>
+                                    <th scope="col" className="px-6 py-4">Status</th>
+                                    <th scope="col" className="px-6 py-4 text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {todos.map((task) => (
+                                    <tr key={task.id} className="border-t border-[#c7d2fe]/40 hover:bg-[#eef2ff]/60 transition-colors">
+                                        <td className="px-6 py-4 text-base">{task.task}</td>
+                                        <td className="px-6 py-4 capitalize font-semibold">
+                                            <span className={`text-sm ${task.priority === "high" ? "text-[#b91c1c]" : task.priority === "medium" ? "text-[#d97706]" : "text-[#166534]"}`}>
+                                                {task.priority}
+                                            </span>
+                                        </td>
                                         <td className="px-6 py-4">
-                                            {task.priority}
+                                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${task.status === "completed" ? "bg-[#dcfce7] text-[#166534]" : "bg-[#fef9c3] text-[#a16207]"}`}>
+                                                {task.status === "completed" ? "Completed" : "Pending"}
+                                            </span>
                                         </td>
-                                        <td className={`px-6 py-4 font-semibold ${task.status === "completed" ? "text-green-600" : "text-red-600"}`}>
-                                            {task.status || "pending"}
-                                        </td>
-                                        <td className="px-6 py-4 flex gap-3 items-start">
-                                            <button
-                                                onClick={() => handleStatusChange(task)}
-                                                className="font-medium text-blue-600 hover:underline disabled:text-gray-500"
-                                                disabled={task.status === "completed"}>
-                                                Mark as Done
-                                            </button>
+                                        <td className="px-6 py-4 flex flex-wrap gap-3 justify-center">
                                             {task.status !== "completed" && (
-                                                <button onClick={() => setUpdateId(task.id)}
-                                                    className="font-medium text-green-600 dark:text-green-500 hover:underline">
-                                                    Edit
+                                                <button onClick={() => handleStatusChange(task)} className="text-green-600 text-base"
+                                                    disabled={task.status === "completed"}>
+                                                    <i className="bi bi-check-circle"></i>
+                                                </button>
+                                            )}
+                                            {task.status !== "completed" && (
+                                                <button onClick={() => setUpdateId(task.id)} className="text-yellow-600 text-base" >
+                                                    <i className="bi bi-pencil-square"></i>
                                                 </button>
                                             )}
                                             <button onClick={() => {
                                                 dispatch(deleteTodo({ uid: user.id, deleteId: task.id }))
                                                 dispatch(fetchTodo(user.id))
-                                            }} className="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
-
+                                            }} className="text-red-600 text-base">
+                                                <i className="bi bi-trash3"></i>
+                                            </button>
                                         </td>
                                     </tr>
-                                })
-                            }
-                        </tbody>
-                    </table>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.main-btn {
+    transition: all 0.3s ease-out;
+    background-color: #E27614;
+    border: 2px solid transparent;
+    border-radius: 12px;
+}
+
+.main-btn:hover {
+    background-color: transparent;
+    border: 2px solid #E27614;
+    transition: all 0.3s 0s ease-out;
+}
+
+.submit-btn {
+    background-color: #20233f;
+    transition: all 0.3s ease-out;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: transparent;
+    border-color: #20233f;
+    transition: all 0.3s 0s ease-out;
+    color: #20233f;
+}
