@@ -29,3 +29,26 @@
     transition: all 0.3s 0s ease-out;
     color: #20233f;
 }
+
+.error-page {
+    background-image: url('../public/images/error-img.jpg');
+    height: 100vh;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 480px) {
+    .error-page {
+        background-size: contain;
+        background-color: #111a45;
+    }
+}
+
+.height {
+    height: calc(100vh - 69px);
+}
+
+.scrollbar{
+    scrollbar-width: none;
+}

@@ -6,6 +6,7 @@ import SignIn from "./pages/SignIn"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { useSelector } from "react-redux"
 import { ToastContainer } from "react-toastify"
+import ErrorPage from "./pages/ErrorPage"
 
 const App = () => {
     const user = useSelector((store) => store.todos.currentUser)
@@ -17,6 +18,7 @@ const App = () => {
                 <Route path="/edit-todo/:id" element={<ProtectedRoute Component={Todos} />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/sign-in" element={<SignIn />} />
+                <Route path="*" element={<ErrorPage />} />
             </Routes>
             <ToastContainer />
         </BrowserRouter>

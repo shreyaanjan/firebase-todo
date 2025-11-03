@@ -75,8 +75,8 @@ const Todos = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#e0f2fe] via-[#f0f9ff] to-[#ede9fe] py-10 px-5 text-[#1e293b] font-[poppins]">
-            <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/60">
+        <div className="height bg-gradient-to-br from-[#e0f2fe] via-[#f0f9ff] to-[#ede9fe] py-10 px-5 text-[#1e293b] font-[poppins]">
+            <div className="max-w-4xl h-[80vh] overflow-hidden mx-auto bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/60">
                 <h2 className="text-center text-3xl font-semibold text-[#20233f] mb-10 tracking-wide">
                     TaskBoard
                 </h2>
@@ -105,9 +105,9 @@ const Todos = () => {
                     </button>
                 </form>
                 <div className="rounded-2xl border border-[#c7d2fe]/60 bg-[#f0f7ff]/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(147,197,253,0.25)] transition-all duration-300 overflow-hidden">
-                    <div className="max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#a5b4fc] scrollbar-track-transparent hover:scrollbar-thumb-[#818cf8]">
+                    <div className="max-h-[250px] overflow-y-auto scrollbar">
                         <table className="w-full text-sm text-left text-[#1e293b]">
-                            <thead className="uppercase text-[#20233f] bg-[#e0e7ff]/80 border-b border-[#c7d2fe] sticky top-0 z-10">
+                            <thead className="uppercase text-[#20233f] bg-[#e0e7ff]/100 border-b border-[#c7d2fe] sticky top-0 z-10">
                                 <tr>
                                     <th scope="col" className="px-6 py-4">Task</th>
                                     <th scope="col" className="px-6 py-4">Priority</th>
@@ -125,7 +125,7 @@ const Todos = () => {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${task.status === "completed" ? "bg-[#dcfce7] text-[#166534]" : "bg-[#fef9c3] text-[#a16207]"}`}>
+                                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${task.status === "completed" ? "bg-emerald-00 text-[#166534]" : "bg-orange-200 text-[#a16207]"}`}>
                                                 {task.status === "completed" ? "Completed" : "Pending"}
                                             </span>
                                         </td>
