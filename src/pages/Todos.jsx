@@ -75,88 +75,131 @@ const Todos = () => {
     }
 
     return (
-        <div className="height bg-gradient-to-br from-[#e0f2fe] via-[#f0f9ff] to-[#ede9fe] py-10 px-5 text-[#1e293b] font-[poppins]">
-            <div className="max-w-4xl h-[80vh] overflow-hidden mx-auto bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/60">
-                <h2 className="text-center text-3xl font-semibold text-[#20233f] mb-10 tracking-wide">
+        <div className="min-h-screen bg-gradient-to-br from-[#e0f2fe] via-[#f0f9ff] to-[#ede9fe] py-10 px-4 sm:px-6 md:px-8 text-[#1e293b] font-[poppins]">
+            <div className="max-w-2xl h-auto sm:h-[80vh] overflow-hidden mx-auto bg-white/80 backdrop-blur-xl p-5 sm:p-8 rounded-3xl shadow-2xl border border-white/60">
+                <h2 className="text-center text-2xl sm:text-3xl font-semibold text-[#20233f] mb-6 sm:mb-10 tracking-wide">
                     TaskBoard
                 </h2>
-                <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row sm:items-end gap-5 mb-10">
-                    <div className="flex-1">
-                        <label htmlFor="task" className="block mb-2 text-lg font-semibold text-[#334155]">
+                <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row sm:items-end gap-5 mb-8 sm:mb-10">
+                    <div className="flex-1 w-full">
+                        <label htmlFor="task" className="block mb-2 text-base sm:text-lg font-semibold text-[#334155]">
                             Enter Task
                         </label>
-                        <input type="text" id="task" onChange={handleChange} value={input.task}
-                            className="w-full h-11 bg-white/70 border-2 border-[#c7d2fe] text-[#1e293b] text-sm rounded-xl focus:border-[#6366f1] p-3 outline-none shadow-inner transition-all" />
+                        <input
+                            type="text"
+                            id="task"
+                            onChange={handleChange}
+                            value={input.task}
+                            className="w-full h-11 bg-white/70 border-2 border-[#c7d2fe] text-[#1e293b] text-sm rounded-xl focus:border-[#6366f1] p-3 outline-none shadow-inner transition-all"
+                        />
                     </div>
+
                     <div className="w-full sm:w-40">
-                        <label htmlFor="priority" className="block mb-2 text-lg font-semibold text-[#334155]">
+                        <label htmlFor="priority" className="block mb-2 text-base sm:text-lg font-semibold text-[#334155]">
                             Priority
                         </label>
-                        <select id="priority" onChange={handleChange} value={input.priority}
-                            className="w-full h-11 bg-white/70 border-2 border-[#c7d2fe] text-[#1e293b] text-sm rounded-xl focus:border-[#6366f1] p-3 outline-none shadow-inner transition-all">
+                        <select
+                            id="priority"
+                            onChange={handleChange}
+                            value={input.priority}
+                            className="w-full h-11 bg-white/70 border-2 border-[#c7d2fe] text-[#1e293b] text-sm rounded-xl focus:border-[#6366f1] p-3 outline-none shadow-inner transition-all"
+                        >
                             <option value="">Select</option>
                             <option value="high">High</option>
                             <option value="medium">Medium</option>
                             <option value="low">Low</option>
                         </select>
                     </div>
-                    <button type="submit" className="submit-btn py-2 px-7 tracking-wider">
+
+                    <button type="submit" className="submit-btn py-2 px-7 tracking-wider w-full sm:w-auto">
                         {isEdit ? "Update Task" : "Add Task"}
                     </button>
                 </form>
-                <div className="rounded-2xl border border-[#c7d2fe]/60 bg-[#f0f7ff]/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(147,197,253,0.25)] transition-all duration-300 overflow-hidden">
-                    <div className="max-h-[250px] overflow-y-auto scrollbar">
-                        <table className="w-full text-sm text-left text-[#1e293b]">
-                            <thead className="uppercase text-[#20233f] bg-[#e0e7ff]/100 border-b border-[#c7d2fe] sticky top-0 z-10">
-                                <tr>
-                                    <th scope="col" className="px-6 py-4">Task</th>
-                                    <th scope="col" className="px-6 py-4">Priority</th>
-                                    <th scope="col" className="px-6 py-4">Status</th>
-                                    <th scope="col" className="px-6 py-4 text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {todos.map((task) => (
-                                    <tr key={task.id} className="border-t border-[#c7d2fe]/40 hover:bg-[#eef2ff]/60 transition-colors">
-                                        <td className="px-6 py-4 text-base">{task.task}</td>
-                                        <td className="px-6 py-4 capitalize font-semibold">
-                                            <span className={`text-sm ${task.priority === "high" ? "text-[#b91c1c]" : task.priority === "medium" ? "text-[#d97706]" : "text-[#166534]"}`}>
-                                                {task.priority}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${task.status === "completed" ? "bg-emerald-00 text-[#166534]" : "bg-orange-200 text-[#a16207]"}`}>
-                                                {task.status === "completed" ? "Completed" : "Pending"}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 flex flex-wrap gap-3 justify-center">
-                                            {task.status !== "completed" && (
-                                                <button onClick={() => handleStatusChange(task)} className="text-green-600 text-base"
-                                                    disabled={task.status === "completed"}>
-                                                    <i className="bi bi-check-circle"></i>
-                                                </button>
-                                            )}
-                                            {task.status !== "completed" && (
-                                                <button onClick={() => setUpdateId(task.id)} className="text-yellow-600 text-base" >
-                                                    <i className="bi bi-pencil-square"></i>
-                                                </button>
-                                            )}
-                                            <button onClick={() => {
-                                                dispatch(deleteTodo({ uid: user.id, deleteId: task.id }))
-                                                toast.success("Task Deleted Successfully !");
-                                                dispatch(fetchTodo(user.id))
-                                            }} className="text-red-600 text-base">
-                                                <i className="bi bi-trash3"></i>
+                <div className="rounded-2xl border border-[#c7d2fe]/60 bg-[#f0f7ff]/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(147,197,253,0.25)] h-[250px] sm:h-[200px] overflow-y-auto transition-all duration-300">
+                    <div className="bg-white rounded-2xl shadow-md w-full p-4 sm:p-5">
+                        <div className="flex items-center justify-between mb-3 sm:mb-4">
+                            <h2 className="text-gray-700 font-semibold text-base sm:text-lg">TASKS</h2>
+                        </div>
+                        <div className="space-y-3">
+                            {todos.map((todo, idx) => (
+                                <div
+                                    key={todo.id}
+                                    className={`${idx % 2 === 0 ? "bg-yellow-50" : "bg-blue-50"
+                                        } border border-yellow-100 rounded-xl p-3 sm:p-4 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-0`}
+                                >
+                                    <div className="flex justify-between">
+                                        <div>
+                                        {todo.status !== "completed" && (
+                                            <button
+                                                onClick={() => handleStatusChange(todo)}
+                                                className="text-green-600 text-base"
+                                                disabled={todo.status === "completed"}
+                                            >
+                                                <i className="bi bi-check-circle"></i>
                                             </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                        )}
+                                        <div>
+                                            <span className="text-gray-800 font-medium break-words">{todo.task}</span>
+                                            <span className="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2 py-0.5 rounded ml-2 capitalize">
+                                                {todo.priority}
+                                            </span>
+                                            <p className="text-gray-500 text-sm mt-1">{todo.status}</p>
+                                        </div>
+                                        </div>
+                                            <div className="flex items-center justify-end gap-4 mt-2 sm:hidden">
+                                                {todo.status !== "completed" && (
+                                                    <button onClick={() => setUpdateId(todo.id)} className="text-yellow-600 text-base">
+                                                        <i className="bi bi-pencil-square"></i>
+                                                    </button>
+                                                )}
+                                                <button
+                                                    onClick={() => {
+                                                        dispatch(deleteTodo({ uid: user.id, deleteId: todo.id }));
+                                                        toast.success("Task Deleted Successfully!");
+                                                        dispatch(fetchTodo(user.id));
+                                                    }}
+                                                    className="text-red-600 text-base"
+                                                >
+                                                    <i className="bi bi-trash3"></i>
+                                                </button>
+                                            </div>
+                                    </div>
+                                    <div className="hidden sm:flex items-center gap-4 justify-end">
+                                        {todo.status !== "completed" && (
+                                            <button onClick={() => setUpdateId(todo.id)} className="text-yellow-600 text-base">
+                                                <i className="bi bi-pencil-square"></i>
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={() => {
+                                                dispatch(deleteTodo({ uid: user.id, deleteId: todo.id }));
+                                                toast.success("Task Deleted Successfully!");
+                                                dispatch(fetchTodo(user.id));
+                                            }}
+                                            className="text-red-600 text-base"
+                                        >
+                                            <i className="bi bi-trash3"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            ))}
+                        </div>
+                        {/* <div className="flex flex-wrap justify-center gap-5 mt-6">
+                            <div className="flex items-center gap-2 text-green-600">
+                                <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+                                <span className="text-sm font-medium">Active</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-gray-400">
+                                <span className="w-3 h-3 bg-gray-300 rounded-full"></span>
+                                <span className="text-sm font-medium">Completed</span>
+                            </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
         </div>
+
     )
 }
 
