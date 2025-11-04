@@ -4,6 +4,7 @@ import { addTodo, deleteTodo, fetchTodo, updateTodo } from "../features/todos/to
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "../config/firebase"
 import { toast } from "react-toastify"
+import { Check } from "lucide-react"
 
 const Todos = () => {
     const [input, setInput] = useState({
@@ -130,45 +131,58 @@ const Todos = () => {
                             </div>
                         </div>
                         <div className="space-y-3">
-                            {filteredTodos.map((todo, idx) => (
-                                <div key={todo.id} className={`border rounded-xl p-3 sm:p-4 flex flex-col justify-between ${todo.priority === "high" ? "bg-red-50 border-red-200"
+                            {filteredTodos.map((todo) => (
+                                <div key={todo.id} className={`relative border rounded-xl p-3 sm:p-4 flex flex-col justify-between ${todo.priority === "high"
+                                    ? "bg-red-50 border-red-200"
                                     : todo.priority === "medium"
                                         ? "bg-blue-50 border-blue-200"
-                                        : "bg-green-50 border-green-200"}`} >
-                                    <div>
-                                        {todo.status !== "completed" && (
+                                        : "bg-green-50 border-green-200"
+                                    }`}>
+                                    {todo.status !== "completed" && (
+                                        <div className="absolute top-2 right-2 group z-50">
                                             <button onClick={() => handleStatusChange(todo)}
-                                                className={`text-base mb-1 ${todo.priority === "high"
+                                                disabled={todo.status === "completed"}
+                                                className={`p-2 rounded-full border hover:bg-green-100 active:scale-95 transition ${todo.priority === "high"
+                                                    ? "border-red-500 hover:bg-red-100"
+                                                    : todo.priority === "medium"
+                                                        ? "border-blue-500 hover:bg-blue-100"
+                                                        : "border-green-500 hover:bg-green-100"
+                                                    }`}>
+                                                <Check className={`h-3 w-3 ${todo.priority === "high"
                                                     ? "text-red-600"
                                                     : todo.priority === "medium"
                                                         ? "text-blue-600"
-                                                        : "text-green-600"}`}
-                                                disabled={todo.status === "completed"} >
-                                                <i className="bi bi-check-circle"></i>
+                                                        : "text-green-600"
+                                                    }`}
+                                                />
                                             </button>
-                                        )}
-                                        <div>
-                                            <span className="text-gray-800 font-medium break-words">
-                                                {todo.task}
+                                            <span className="absolute right-0 top-10 bg-gray-800 text-white text-xs px-2 py-1 rounded-md shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-150 pointer-events-none">
+                                                Mark as complete
                                             </span>
-                                            <span
-                                                className={`text-xs font-semibold px-2 py-0.5 rounded ml-2 capitalize ${todo.priority === "high"
-                                                    ? "bg-red-200 text-red-800"
-                                                    : todo.priority === "medium"
-                                                        ? "bg-blue-200 text-blue-800"
-                                                        : "bg-green-200 text-green-800"}`} >
-                                                {todo.priority}
-                                            </span>
-                                            <p className="text-gray-500 text-sm mt-1">{todo.status}</p>
                                         </div>
+                                    )}
+                                    <div>
+                                        <span className="text-gray-800 font-medium break-words">
+                                            {todo.task}
+                                        </span>
+                                        <span className={`text-xs font-semibold px-2 py-0.5 rounded ml-2 capitalize ${todo.priority === "high"
+                                            ? "bg-red-200 text-red-800"
+                                            : todo.priority === "medium"
+                                                ? "bg-blue-200 text-blue-800"
+                                                : "bg-green-200 text-green-800"
+                                            }`}>
+                                            {todo.priority}
+                                        </span>
+                                        <p className="text-gray-500 text-sm mt-1">{todo.status}</p>
                                     </div>
-                                    <div className="flex items-center gap-4 justify-end">
+                                    <div className="flex items-center gap-4 justify-end mt-2">
                                         {todo.status !== "completed" && (
                                             <button onClick={() => setUpdateId(todo.id)} className={`text-base ${todo.priority === "high"
                                                 ? "text-red-700"
                                                 : todo.priority === "medium"
                                                     ? "text-blue-700"
-                                                    : "text-green-700"}`}>
+                                                    : "text-green-700"
+                                                }`}>
                                                 <i className="bi bi-pencil-square"></i>
                                             </button>
                                         )}
@@ -176,11 +190,13 @@ const Todos = () => {
                                             dispatch(deleteTodo({ uid: user.id, deleteId: todo.id }));
                                             toast.success("Task Deleted Successfully!");
                                             dispatch(fetchTodo(user.id));
-                                        }} className={`text-base ${todo.priority === "high"
-                                            ? "text-red-700"
-                                            : todo.priority === "medium"
-                                                ? "text-blue-700"
-                                                : "text-green-700"}`} >
+                                        }}
+                                            className={`text-base ${todo.priority === "high"
+                                                ? "text-red-700"
+                                                : todo.priority === "medium"
+                                                    ? "text-blue-700"
+                                                    : "text-green-700"
+                                                }`}>
                                             <i className="bi bi-trash3"></i>
                                         </button>
                                     </div>
