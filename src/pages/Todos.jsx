@@ -109,7 +109,7 @@ const Todos = () => {
                     </button>
                 </form>
                 <div className="rounded-2xl border border-[#c7d2fe]/60 bg-[#f0f7ff]/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(147,197,253,0.25)] h-[250px] overflow-y-auto transition-all duration-300 scrollbar">
-                    <div className="bg-white rounded-2xl shadow-md w-full p-4 sm:p-5">
+                    <div className="w-full p-4 sm:p-5">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-3 sm:gap-0">
                             <h2 className="text-gray-700 font-semibold text-base sm:text-lg text-center sm:text-left">
                                 TASKS
