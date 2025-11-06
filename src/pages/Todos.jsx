@@ -153,7 +153,7 @@ const Todos = () => {
                                                     : todo.priority === "medium"
                                                         ? "text-blue-600"
                                                         : "text-green-600"
-                                                    }`}/>
+                                                    }`} />
                                             </button>
                                             <span className="absolute right-0 top-10 bg-gray-800 text-white text-xs px-2 py-1 rounded-md shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-150 pointer-events-none">
                                                 Mark as complete

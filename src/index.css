@@ -46,9 +46,15 @@
 }
 
 .height {
-    height: calc(100% - 69px);
+    height: calc(100vh - 69px);
 }
 
-.scrollbar{
+@media (max-width : 1618px) {
+    .height {
+        height: 100%
+    }
+}
+
+.scrollbar {
     scrollbar-width: none;
 }
