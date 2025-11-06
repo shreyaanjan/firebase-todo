@@ -81,7 +81,7 @@ const Todos = () => {
 
     return (
         <div className="height bg-gradient-to-br from-[#e0f2fe] via-[#f0f9ff] to-[#ede9fe] py-10 px-4 sm:px-6 md:px-8 text-[#1e293b] font-[poppins]">
-            <div className="max-w-2xl h-auto sm:h-[80vh] overflow-hidden mx-auto bg-white/80 backdrop-blur-xl p-5 sm:p-8 rounded-3xl shadow-2xl border border-white/60">
+            <div className="max-w-2xl overflow-hidden mx-auto bg-white/80 backdrop-blur-xl p-5 sm:p-8 rounded-3xl shadow-2xl border border-white/60">
                 <h2 className="text-center text-2xl sm:text-3xl font-semibold text-[#20233f] mb-6 sm:mb-10 tracking-wide">
                     TaskBoard
                 </h2>
@@ -109,7 +109,7 @@ const Todos = () => {
                         {isEdit ? "Update Task" : "Add Task"}
                     </button>
                 </form>
-                <div className="rounded-2xl border border-[#c7d2fe]/60 bg-[#f0f7ff]/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(147,197,253,0.25)] h-[250px] overflow-y-auto transition-all duration-300 scrollbar">
+                <div className="rounded-2xl border border-[#c7d2fe]/60 bg-[#f0f7ff]/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(147,197,253,0.25)] h-[460px] overflow-y-auto transition-all duration-300 scrollbar">
                     <div className="w-full p-4 sm:p-5">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-3 sm:gap-0">
                             <h2 className="text-gray-700 font-semibold text-base sm:text-lg text-center sm:text-left">
@@ -153,8 +153,7 @@ const Todos = () => {
                                                     : todo.priority === "medium"
                                                         ? "text-blue-600"
                                                         : "text-green-600"
-                                                    }`}
-                                                />
+                                                    }`}/>
                                             </button>
                                             <span className="absolute right-0 top-10 bg-gray-800 text-white text-xs px-2 py-1 rounded-md shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-150 pointer-events-none">
                                                 Mark as complete

@@ -46,7 +46,7 @@
 }
 
 .height {
-    height: calc(100vh - 69px);
+    height: calc(100% - 69px);
 }
 
 .scrollbar{
